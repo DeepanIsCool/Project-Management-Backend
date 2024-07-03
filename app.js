@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const connectDb = require('./config/db'); // Database connection
 const studentsRoutes = require('./routes/studentsRoutes');
-
+const cors = require("cors");
 
 
 
@@ -15,7 +15,23 @@ connectDb();
 
 // Middleware
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  
+  
+];
 
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 // Routes
 // app.use('/studentsRoutes', studentsRoutes);
 app.use('/studentsRoutes', require("./routes/authRoutes"));
