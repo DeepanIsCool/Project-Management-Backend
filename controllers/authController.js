@@ -4,6 +4,7 @@ const { sendOtp } = require("../utils/otpUtils");
 const otpModel = require("../models/otpModel")
 const Student  = require("../models/studentsModel")
 const constants = require("../constants");
+
 const Sign_up = asyncHandler(async (req, res) => {
     const { name, email, password, phone, enrollment_no } = req.body;
     if (!name || !email || !password || !phone || !enrollment_no) {
