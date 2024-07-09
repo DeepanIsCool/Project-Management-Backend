@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const connectDb = require('./config/db'); // Database connection
 const studentsRoutes = require('./routes/studentsRoutes');
 const cors = require("cors");
-
-
+require("dotenv").config();
+const session = require("express-session");
 
 const app = express();
 const PORT = 3000;
@@ -35,6 +35,7 @@ app.use(cors(corsOptions));
 // Routes
 // app.use('/studentsRoutes', studentsRoutes);
 app.use('/studentsRoutes', require("./routes/authRoutes"));
+
 app.get("/", (req, res) => {
     res.send("Welcome to the Project Management Backend");
   });

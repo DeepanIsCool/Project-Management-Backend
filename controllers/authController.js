@@ -80,14 +80,16 @@ const Sign_upvalidation = asyncHandler(async (req, res) => {
 
 const SendOtpNumber = asyncHandler(async (req, res) => {
   const { number } = req.body;
+  // console.log(req.body);
   if (!number) {
     return res
       .status(constants.VALIDATION_ERROR)
       .json("all fields are required");
   }
   const otp = Math.floor(1000 + Math.random() * 9000);
-
+  // console.log(otp);
   const otpStatus = await sendOtp(req, res, "+91" + number, otp);
+  console.log(otpStatus);
 
   if (otpStatus === true) {
     const numberAvilable = await otpModel.findOne({ number });
