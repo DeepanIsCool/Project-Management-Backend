@@ -34,7 +34,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // Routes
 // app.use('/studentsRoutes', studentsRoutes);
-app.use('/studentsRoutes', require("./routes/authRoutes"));
+app.use('/studentsRoutes', require("./routes/studentsRoutes"));
+app.use('/userRoutes', require("./routes/userRoutes"));
 
 app.get("/", (req, res) => {
     res.send("Welcome to the Project Management Backend");

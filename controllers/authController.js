@@ -3,8 +3,11 @@ const asyncHandler = require("express-async-handler");
 const { sendOtp } = require("../utils/otpUtils");
 const otpModel = require("../models/otpModel")
 const Student  = require("../models/studentsModel")
+const client = require("../models/userModel");
 const constants = require("../constants");
 const nodemailer = require("nodemailer");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const Sign_up = asyncHandler(async (req, res) => {
     const { name, email, password, phone, enrollment_no } = req.body;
