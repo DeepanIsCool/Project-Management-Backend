@@ -4,6 +4,7 @@ const { sendOtp } = require("../utils/otpUtils");
 const otpModel = require("../models/otpModel")
 const Student  = require("../models/studentsModel")
 const constants = require("../constants");
+const nodemailer = require("nodemailer");
 
 const Sign_up = asyncHandler(async (req, res) => {
     const { name, email, password, phone, enrollment_no } = req.body;
@@ -115,22 +116,24 @@ const SendOtpEmail=asyncHandler(async(req,res)=>{
     if(user2)
       {
         let otp1 = 0;
+        console.log(otp1);
   
         const sendResetPasswordEmail = async (eMail) => {
           const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: "aniketacharya30@gmail.com",
-              pass: "njvt saqz bhiv rhhc",
+              user: "sadhukhandeepan@gmail.com",
+              pass: "opie ojxq xdrv ndkz",
             },
           });
           otp1 = Math.floor(1000 + Math.random() * 9000);
           const mailOptions = {
-            from: "aniketacharya30@gmail.com",
+            from: "sadhukhandeepan@gmail.com",
             to: eMail,
-            subject: "Password Reset Request",
+            subject: "Your OTP for email is :",
             text: `Your OTP IS ${otp1}`,
           };
+          console.log(otp1);
   
           const sendOTP1 = await transporter.sendMail(mailOptions);
           if (sendOTP1) {
