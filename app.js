@@ -37,6 +37,7 @@ app.use(cors(corsOptions));
 app.use('/studentsRoutes', require("./routes/studentsRoutes"));
 app.use('/userRoutes', require("./routes/userRoutes"));
 
+
 app.get("/", (req, res) => {
     res.send("Welcome to the Project Management Backend");
   });
