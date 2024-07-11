@@ -1,21 +1,21 @@
 //facultyController.js
 
 const asyncHandler = require("express-async-handler");
-const { sendOtp } = require("../utils/otpUtils");
-const otpModel = require("../models/otpModel")
-const Student  = require("../models/facultyModel")
-const client = require("../models/facultyUserModel");
+const { sendOtp } = require("../OTPs/otpUtils");
+const otpModel = require("../OTPs/otpModel")
+const client = require("./facultyUserModel");
 const constants = require("../constants");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const faculty = require("./facultyModel");
 
 const Sign_in = asyncHandler(async (req, res) => {
-  const { enrollment_no, password } = req.body;
-  if (!enrollment_no || !password) {
+  const { employee_id, password } = req.body;
+  if (!employee_id || !password) {
     res.status(constants.VALIDATION_ERROR).json("all fields are required");
   }
-  const userAvailable = await client.findOne({ enrollment_no: enrollment_no });
+  const userAvailable = await client.findOne({ employee_id: employee_id });
 
   if (
     userAvailable &&
@@ -38,20 +38,20 @@ const Sign_in = asyncHandler(async (req, res) => {
   } else {
     res
       .status(constants.UNAUTHORIZED)
-      .json("enrollment number or password is invalid");
+      .json("employee id number or password is invalid");
     // throw new Error("email or password is not valid");
   }
 });
 
 const Sign_up = asyncHandler(async (req, res) => {
-    const { name, email, password, phone, enrollment_no } = req.body;
-    if (!name || !email || !password || !phone || !enrollment_no) {
+    const { name, email, password, phone, employee_id } = req.body;
+    if (!name || !email || !password || !phone || !employee_id) {
       return res
         .status(constants.VALIDATION_ERROR)
         .json("all fields are required");
     }
     const userAvailable = await client.findOne({
-      $or: [{ email: email }, { enrollment_no: enrollment_no }, { phone: phone }],
+      $or: [{ email: email }, { employee_id: employee_id }, { phone: phone }],
     });
     if (userAvailable) {
       return res.status(constants.CONFLICT).json("user already registered");
@@ -62,7 +62,7 @@ const Sign_up = asyncHandler(async (req, res) => {
         email: email,
         password: hashedPassword,
         phone: phone,
-        enrollment_no: enrollment_no,
+        employee_id: employee_id,
         ProfileImage: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
       };
       const user = await client.create(New_user);
@@ -87,15 +87,15 @@ const Sign_up = asyncHandler(async (req, res) => {
   });
 
 const Sign_upvalidation = asyncHandler(async (req, res) => {
-    const { EnrollmentNo } = req.body;
-  console.log(EnrollmentNo)
-    if (!EnrollmentNo) {
+    const { employee_id } = req.body;
+  console.log(employee_id)
+    if (!employee_id) {
       res
         .status(constants.VALIDATION_ERROR)
-        .json("please provide your enrollment no");
+        .json("please provide your employee id no");
     } else {
-      const userAvailable1 = await Student.findOne({
-        Enrollment_No: EnrollmentNo,
+      const userAvailable1 = await faculty.findOne({
+        employee_id: employee_id,
       });
       console.log(userAvailable1)
       if (userAvailable1) {
@@ -111,7 +111,7 @@ const Sign_upvalidation = asyncHandler(async (req, res) => {
       else {
         res
          .status(constants.NOT_FOUND)
-         .json({ message: "Enrollment No is not registered" });
+         .json({ message: "employee id is not registered" });
       }
     }
   });
@@ -149,7 +149,7 @@ const SendOtpEmail=asyncHandler(async(req,res)=>{
       return res.status(constants.VALIDATION_ERROR).json("email is required");
     }
    
-    const user2=await Student.findOne({Email:email})
+    const user2=await faculty.findOne({Email:email})
     if(user2)
       {
         let otp1 = 0;

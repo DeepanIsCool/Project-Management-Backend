@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  Sign_in,
   Sign_up,
   Sign_upvalidation,
   SendOtpNumber,
@@ -9,8 +10,9 @@ const {
   ValidateEmailOTP,
   ValidatePhoneNumber,
 
-} = require("../controllers/authController");
+} = require("./facultyController");
 
+router.route("/signin").post(Sign_in);
 router.route("/signup").post(Sign_up);
 router.route("/signupvalidation").post(Sign_upvalidation);
 router.route("/signup/SendOtpEmail").post(SendOtpEmail);

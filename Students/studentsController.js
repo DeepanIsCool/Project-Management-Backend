@@ -1,9 +1,9 @@
 //authController.js
 const asyncHandler = require("express-async-handler");
-const { sendOtp } = require("../utils/otpUtils");
-const otpModel = require("../models/otpModel")
-const Student  = require("../models/studentsModel")
-const client = require("../models/userModel");
+const { sendOtp } = require("../OTPs/otpUtils");
+const otpModel = require("../OTPs/otpModel")
+const Student  = require("./studentsModel")
+const client = require("./studentsUserModel");
 const constants = require("../constants");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");

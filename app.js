@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDb = require('./config/db'); // Database connection
-const studentsRoutes = require('./routes/studentsRoutes');
+const studentsRoutes = require('./Students/studentsRoutes');
 const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
@@ -34,9 +34,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // Routes
 // app.use('/studentsRoutes', studentsRoutes);
-app.use('/studentsRoutes', require("./routes/studentsRoutes"));
-app.use('/userRoutes', require("./routes/userRoutes"));
-
+app.use('/studentsRoutes', require("./Students/studentsRoutes"));
+app.use('/facultyRoutes', require("./Faculty/facultyRoutes"));
 
 app.get("/", (req, res) => {
     res.send("Welcome to the Project Management Backend");
