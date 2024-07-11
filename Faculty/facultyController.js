@@ -102,10 +102,11 @@ const Sign_upvalidation = asyncHandler(async (req, res) => {
         res
           .status(constants.OK)
           .json({
-            Name: userAvailable1.Name,
-            email: userAvailable1.Email,
-            phone_no: userAvailable1.Mobile_Number,
+            Name: userAvailable1.name,
+            email: userAvailable1.email,
+            phone_no: userAvailable1.phone,
           });
+          console.log(userAvailable1);
         
       }
       else {
