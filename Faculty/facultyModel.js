@@ -14,11 +14,6 @@ const facultySchema = new mongoose.Schema(
       unique: true,
     },
 
-    password: {
-      type: String,
-      required: [false, "please add the password"],
-    },
-
     name: {
       type: String,
       required: true,
@@ -28,13 +23,6 @@ const facultySchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-    },
-    ProfileImage: {
-      type: String,
-      required: true,
-    },
-    access_token: {
-      type: String,
     },
   },
   { timestamps: true }

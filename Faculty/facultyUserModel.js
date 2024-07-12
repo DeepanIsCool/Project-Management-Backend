@@ -31,14 +31,16 @@ const facultySchema = new mongoose.Schema(
     },
     ProfileImage: {
       type: String,
-      required: true,
+      default: "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
     },
     access_token: {
       type: String,
+      default:null,
+    
     },
   },
   { timestamps: true }
 );
 
-const facultyUser = mongoose.model("Faculty", facultySchema);
+const facultyUser = mongoose.model("facultyuser", facultySchema);
 module.exports = facultyUser;

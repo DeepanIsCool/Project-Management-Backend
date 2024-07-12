@@ -17,6 +17,7 @@ connectDb();
 app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174/"
   
   
 ];
@@ -36,6 +37,8 @@ app.use(cors(corsOptions));
 // app.use('/studentsRoutes', studentsRoutes);
 app.use('/studentsRoutes', require("./Students/studentsRoutes"));
 app.use('/facultyRoutes', require("./Faculty/facultyRoutes"));
+//app.use('/adminRoutes', require("./Admin/adminRoutes"));
+app.use('/projectRoutes', require("./Projects/projectRoutes"));
 
 app.get("/", (req, res) => {
     res.send("Welcome to the Project Management Backend");

@@ -22,11 +22,10 @@ status: {
 
   project_cover_img: {
     type: String, 
-    required: false,
-    default:""
+    default:null,
   },
 
-  expiryTime: {
+  expiryDate: {
     type: String,
     required: true,
   },
@@ -42,13 +41,16 @@ status: {
   },
 
   requirements: {
-    type: Array,
-    required: true,
+    type: String,
+    default: null,
   },
   head_faculty:{
     type: mongoose.Schema.Types.ObjectId,
     ref: "admin",
-    required: null,
+  },
+  faculty_list:{
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "admin",
   }
 
 

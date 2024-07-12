@@ -149,9 +149,11 @@ const SendOtpEmail=asyncHandler(async(req,res)=>{
     {
       return res.status(constants.VALIDATION_ERROR).json("email is required");
     }
-   
-    const user2=await faculty.findOne({Email:email})
+
+    const user2=await faculty.findOne({email:email})
+ 
     if(user2)
+
       {
         let otp1 = 0;
         console.log(otp1);
@@ -176,14 +178,14 @@ const SendOtpEmail=asyncHandler(async(req,res)=>{
           const sendOTP1 = await transporter.sendMail(mailOptions);
           if (sendOTP1) {
             const emailAvilable2 = await otpModel.findOne({
-              email: user2.Email,
+              email: user2.email,
             });
             if (emailAvilable2) {
               emailAvilable2.Email_otp = otp1;
               await emailAvilable2.save();
             } else {
               await otpModel.create({
-                email: user2.Email,
+                email: user2.email,
                 Email_otp: otp1,
               });
             }
@@ -191,7 +193,7 @@ const SendOtpEmail=asyncHandler(async(req,res)=>{
           }
         };
         try {
-          await sendResetPasswordEmail(user2.Email);
+          await sendResetPasswordEmail(user2.email);
         } catch (err) {
           console.log(err.message);
         }
