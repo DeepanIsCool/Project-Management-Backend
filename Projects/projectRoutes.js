@@ -4,7 +4,7 @@ const { CreateProject, EditProject } = require("../Projects/projectController");
 //const { adminChecker } = require("../Admin/adminChecker");
 
 router.route("/createProject").post(CreateProject);
-router.route("/editProject").post(EditProject);
+router.route("/editProject/:id").put(EditProject);
 
 
 module.exports = router;

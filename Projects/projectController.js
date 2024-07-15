@@ -40,40 +40,42 @@ const CreateProject = asyncHandler(async (req, res) => {
     }
 });
 
-const asyncHandler = require("express-async-handler");
-const Project = require("./projectModel");
 
-const EditProject = asyncHandler(async (req, res) => {
+const EditProject = async (req, res) => {
     try {
-        // Parse the form data
-        const { project_name, launchDate, launchTime, status, expiryDate, expiryTime, requirements, projectDuration, description } = req.body;
-
-        // Find the project by ID
-        const project = await Project.findById(req.params.id);
-
-        if (!project) {
-            return res.status(404).json({ message: "Project not found" });
-        }
-
-        // Update fields if they are present in the request
+      
+      const {project_name,launchDate,launchTime,status,expiryDate,expiryTime,projectDuration,description,requirements} = req.body;
+  
+      let project = await Project.findById(req.params.id);
+  
+      if (!project) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+  
+     
+  
+      if (project_name || launchDate ||launchTime ||status ||expiryDate ||expiryTime ||projectDuration ||description ||requirements ) {
         if (project_name) project.project_name = project_name;
+        if (description) project.description = description;
         if (launchDate) project.launchDate = launchDate;
         if (launchTime) project.launchTime = launchTime;
         if (status) project.status = status;
         if (expiryDate) project.expiryDate = expiryDate;
         if (expiryTime) project.expiryTime = expiryTime;
-        if (requirements) project.requirements = requirements;
         if (projectDuration) project.projectDuration = projectDuration;
-        if (description) project.description = description;
-
-        // Save the updated project
-        const updatedProject = await project.save();
-        res.status(200).json({ message: "Project updated successfully", project: updatedProject });
+        if (requirements) project.requirements = requirements;
+      } else {
+        return res.status(400).json({ error: "At least one field should be provided for update" });
+      }
+  
+        project.save();
+  
+      res.status(200).json({ message: "Project updated successfully" });
     } catch (error) {
-        console.error("Error updating project:", error);
-        res.status(500).json({ message: "Internal server error" });
+      console.error("Error updating project:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
-});
+  };
 
 module.exports = {CreateProject, EditProject };
 
