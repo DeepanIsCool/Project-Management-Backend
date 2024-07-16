@@ -12,33 +12,23 @@ const jwt = require("jsonwebtoken");
 const Sign_in = asyncHandler(async (req, res) => {
   const { enrollment_no, password } = req.body;
   if (!enrollment_no || !password) {
-    res.status(constants.VALIDATION_ERROR).json("all fields are required");
+    return res.status(constants.VALIDATION_ERROR).json({ message: "All fields are required" });
   }
-  const userAvailable = await client.findOne({ enrollment_no: enrollment_no });
+  
+  const userAvailable = await client.findOne({ enrollment_no });
 
-  if (
-    userAvailable &&
-    (await bcrypt.compare(password, userAvailable.password))
-  ) {
+  if (userAvailable && await bcrypt.compare(password, userAvailable.password)) {
     const accessToken = jwt.sign(
-      {
-        user: {
-          _id: userAvailable._id,
-      
-        },
-      },
+      { user: { _id: userAvailable._id } },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "90m" }
     );
+    
     userAvailable.access_token = accessToken;
     await userAvailable.save();
-    res.status(constants.OK).json({ accessToken });
-    // console.log(userAvilable)
+    return res.status(constants.OK).json({ accessToken });
   } else {
-    res
-      .status(constants.UNAUTHORIZED)
-      .json("enrollment number or password is invalid");
-    // throw new Error("email or password is not valid");
+    return res.status(constants.UNAUTHORIZED).json({ message: "Enrollment number or password is invalid" });
   }
 });
 
