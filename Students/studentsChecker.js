@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const Student = require("./studentsUserModel");
 
-module.exports.studentChecker = async (req, res, next) => {
+module.exports.studentsChecker = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 

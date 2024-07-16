@@ -11,6 +11,8 @@ const {
   ValidatePhoneNumber,
 
 } = require("./facultyController");
+const { facultyChecker } = require("./facultyChecker");
+const { facultyDashboard } = require("./facultyDashboard");
 
 router.route("/signin").post(Sign_in);
 router.route("/signup").post(Sign_up);
@@ -19,7 +21,7 @@ router.route("/signup/SendOtpEmail").post(SendOtpEmail);
 router.route("/signup/SendOtpNumber").post(SendOtpNumber);
 router.route("/signupvalidation/validateEmailOTP").post(ValidateEmailOTP);
 router.route("/signupvalidation/validatePhoneNumberOTP").post(ValidatePhoneNumber);
-
+router.route("/facultyDashboard").post(facultyChecker,facultyDashboard);
 // router.route("/callback").get(pjwt_callback);
 
 module.exports = router;
