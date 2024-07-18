@@ -1,15 +1,15 @@
-//db.js
 const mongoose = require("mongoose");
+// mongoose.set('strictQuery', true);
+require("dotenv").config();
 
 const connectDb = async () => {
   try {
-    const connect = await mongoose.connect("mongodb://localhost:27017/TaskManagement", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Database connected");
+    const connect = await mongoose.connect(process.env.Db);
+    console.log(
+      "database Connected"
+    );
   } catch (err) {
-    console.error("Database connection error:", err);
+    console.log(err);
     process.exit(1);
   }
 };
