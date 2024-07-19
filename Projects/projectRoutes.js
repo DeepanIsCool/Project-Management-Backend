@@ -8,7 +8,7 @@ const { studentsChecker } = require("../Students/studentsChecker");
 router.route("/createProject").post(facultyChecker,CreateProject);
 router.route("/editProject/:id").put(facultyChecker,EditProject);
 router.route("/getProject").get(facultyChecker,getAllProjects);
-router.route("/applyforProject").post(applyForProject);
-router.route("/approveforProject").post(approveApplication);
+router.route("/applyforProject/:id").post(studentsChecker,applyForProject);
+router.route("/approveforProject/:id").post(approveApplication);
 
 module.exports = router;

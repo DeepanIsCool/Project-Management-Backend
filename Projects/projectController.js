@@ -90,18 +90,18 @@ const getAllProjects = asyncHandler(async (req, res) => {
 
 // Student applies for a project
 const applyForProject = async (req, res) => {
-  const { projectId } = req.body;
+  const  projectId  = req.params.id;
   console.log(projectId);
   const { studentId } = req.body; // Assume user ID is available in req.user
-  console.log(studentId);
+  // console.log(studentId);
   try {
-      const project = await Project.findById(projectId);
-      console.log(project);
+      const project = await Project.findById({_id:projectId});
+      // console.log(project);
       if (!project) {
           return res.status(404).json({ message: 'Project not found' });
       }
 
-      const existingApplication = await ProjectAssignment.findOne({ studentId, projectId });
+      const existingApplication = await ProjectAssignment.findOne({ $and: [{ studentId: studentId }, { projectId: projectId }] });
       if (existingApplication) {
           return res.status(400).json({ message: 'You have already applied for this project' });
       }
@@ -112,7 +112,7 @@ const applyForProject = async (req, res) => {
       res.status(201).json({ message: 'Application submitted successfully' });
   } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).json({ message:error.message });
   }
 };
 
@@ -121,7 +121,7 @@ const approveApplication = async (req, res) => {
   console.log(applicationId,status);
   try {
       // Find the application by ID and populate project details
-      const application = await ProjectAssignment.findById(applicationId);
+      const application = await ProjectAssignment.findById({_id:req.params.id});
       console.log(application);
       if (!application) {
           return res.status(404).json({ message: 'Application not found' });
