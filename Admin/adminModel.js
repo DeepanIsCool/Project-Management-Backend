@@ -26,13 +26,13 @@ const adminSchema = new mongoose.Schema(
 
     admin_id: {
         type: String,
-        required: true,
-        unique: true,
-      },
+      required: true,
+      unique: true,
+    },
     
     role: {
-            type: String,
-            default: "admin",
+      type: String,
+      default: "admin",
     },
     
    
