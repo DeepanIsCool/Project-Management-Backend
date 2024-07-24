@@ -2,6 +2,9 @@ const asyncHandler = require("express-async-handler");
 const Project = require("./projectModel");
 const ProjectAssignment = require("./projectApplicationModel");
 const constants = require("../constants");
+const FacultyUser = require("../Faculty/facultyUserModel");
+const StudentUser = require("../Students/studentsUserModel");
+const Faculty = require("../Faculty/facultyUserModel");
 
 const CreateProject = asyncHandler(async (req, res) => {
     // Destructure required fields from formData
@@ -42,6 +45,22 @@ const CreateProject = asyncHandler(async (req, res) => {
     }
 });
 
+const getAllApplications = asyncHandler(async (req, res) => {
+  try {
+    // Extract facultyId from the authenticated user
+    const facultyId = req.user.id;
+
+    // Find all project applications where the head_facultyId matches the facultyId
+    const applications = await ProjectAssignment.find({ head_facultyId: facultyId });
+
+    // Return the applications in the response
+    res.status(200).json(applications);
+  } catch (error) {
+    console.error('Error fetching applications:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 const EditProject = async (req, res) => {
     try {
       
@@ -79,41 +98,78 @@ const EditProject = async (req, res) => {
   };
 
 // Function to get all projects
-const getAllProjects = asyncHandler(async (req, res) => {
-      try {
-          const projects = await Project.find({});
-          res.status(200).json(projects);
-      } catch (error) {
-          console.error("Error fetching projects:", error);
-          res.status(500).json({ message: "Internal server error" });
-      }
-  });
+const getProjects = asyncHandler(async (req, res) => {
+  try {
+    const { projectId } = req.body; // Extract projectId from request body
 
+    if (projectId) {
+      // Fetch and return the specific project if projectId is provided
+      const project = await Project.findById(projectId);
+      if (!project) {
+        return res.status(404).json({ message: 'Project not found' });
+      }
+      return res.status(200).json(project);
+    } else {
+      // Fetch and return all projects if no projectId is provided
+      const projects = await Project.find({});
+      return res.status(200).json(projects);
+    }
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 // Student applies for a project
 const applyForProject = async (req, res) => {
-  const  projectId  = req.params.id;
-  console.log(projectId);
-  const { studentId } = req.body; // Assume user ID is available in req.user
+  const projectId = req.params.id;
+  // console.log(projectId);
+  const { studentId } = req.body;
   // console.log(studentId);
+
   try {
-      const project = await Project.findById({_id:projectId});
-      // console.log(project);
-      if (!project) {
-          return res.status(404).json({ message: 'Project not found' });
-      }
+    // Fetch the project using the provided project ID
+    const project = await Project.findById({_id:projectId});
+    console.log(project);
 
-      const existingApplication = await ProjectAssignment.findOne({ $and: [{ studentId: studentId }, { projectId: projectId }] });
-      if (existingApplication) {
-          return res.status(400).json({ message: 'You have already applied for this project' });
-      }
+    // Check if the project exists
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    // Extract the faculty ID from the project
+    // const facultyId = project.createdBY;
+    // // console.log(facultyId);
 
-      const application = new ProjectAssignment({ studentId, projectId });
-      await application.save();
+    // // Check if the faculty exists
+    // const facultyuser = await FacultyUser.findById({_id:facultyId});
+    // if (!facultyuser) {
+    //   return res.status(404).json({ message: 'FacultyUser not found' });
+    // }
 
-      res.status(201).json({ message: 'Application submitted successfully' });
+    // Check if the student has already applied for this project
+    const existingApplication = await ProjectAssignment.findOne({ studentId, projectId });
+    console.log(existingApplication);
+    if (existingApplication) {
+      return res.status(400).json({ message: 'You have already applied for this project' });
+    }
+    const student = await StudentUser.findById({_id:studentId});
+    console.log(student);
+    // Create a new project assignment
+    const application = new ProjectAssignment({
+      studentId: studentId,
+      projectId: projectId,
+      head_facultyId: project.createdBY,
+      student_name: student.name,
+      project_name: project.project_name,
+    });
+
+    await application.save();
+
+    // Return a success response
+    res.status(201).json({ message: 'Application submitted successfully' , application: application});
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message:error.message });
+    // Log and return the error
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -155,6 +211,6 @@ const approveApplication = async (req, res) => {
 
 
   
-module.exports = { getAllProjects, EditProject, CreateProject, applyForProject, approveApplication };
+module.exports = { getProjects, EditProject, CreateProject, applyForProject, approveApplication, getAllApplications };
   
 

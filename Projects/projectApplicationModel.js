@@ -12,6 +12,11 @@ const applicationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Project', 
         required: true 
+    },  
+    head_facultyId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'facultyuser',
+        required: true
     },
     status: { 
         type: String, 
@@ -21,7 +26,15 @@ const applicationSchema = new mongoose.Schema({
     appliedAt: { 
         type: Date, 
         default: Date.now 
-    }
+    },
+    project_name: {
+        type: String,
+        required: true,
+      },
+    student_name: {
+        type: String,
+        required: true,
+      },
 });
 
 module.exports = mongoose.model('studentapplication', applicationSchema);
