@@ -44,14 +44,14 @@ status: {
     type: String,
     default: null,
   },
-  head_faculty:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "admin",
-  },
   faculty_list:{
     type: [mongoose.Schema.Types.ObjectId],
     ref: "admin",
-  }
+  },
+  createdBY: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
 
 
 });

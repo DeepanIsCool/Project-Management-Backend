@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Project = require("./projectModel");
-const ProjectAssignment = require("./projectAssignmentModel");
+const ProjectAssignment = require("./projectApplicationModel");
 const constants = require("../constants");
 
 const CreateProject = asyncHandler(async (req, res) => {
@@ -29,6 +29,7 @@ const CreateProject = asyncHandler(async (req, res) => {
         projectDuration,
         description,
         requirements,
+        createdBY: req.user._id, // Assume user ID is available in req.user
     });
 
     // Save the Project to the database
