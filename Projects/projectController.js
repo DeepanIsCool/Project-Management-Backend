@@ -100,7 +100,7 @@ const EditProject = async (req, res) => {
 // Function to get all projects
 const getProjects = asyncHandler(async (req, res) => {
   try {
-    const { projectId } = req.body; // Extract projectId from request body
+    const { projectId } = req.params; // Extract projectId from request parameters
 
     if (projectId) {
       // Fetch and return the specific project if projectId is provided
@@ -119,6 +119,7 @@ const getProjects = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 // Student applies for a project
 const applyForProject = async (req, res) => {
   const projectId = req.params.id;

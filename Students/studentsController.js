@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const { sendOtp } = require("../OTPs/otpUtils");
 const otpModel = require("../OTPs/otpModel")
 const Student  = require("./studentsModel")
-const client = require("./studentsUserModel");
+const StudentUser = require("./studentsUserModel");
 const constants = require("../constants");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
@@ -15,7 +15,7 @@ const Sign_in = asyncHandler(async (req, res) => {
     return res.status(constants.VALIDATION_ERROR).json({ message: "All fields are required" });
   }
   
-  const userAvailable = await client.findOne({ enrollment_no });
+  const userAvailable = await StudentUser.findOne({ enrollment_no });
 
   if (userAvailable && await bcrypt.compare(password, userAvailable.password)) {
     const accessToken = jwt.sign(
@@ -39,7 +39,7 @@ const Sign_up = asyncHandler(async (req, res) => {
         .status(constants.VALIDATION_ERROR)
         .json("all fields are required");
     }
-    const userAvailable = await client.findOne({
+    const userAvailable = await StudentUser.findOne({
       $or: [{ email: email }, { enrollment_no: enrollment_no }, { phone: phone }],
     });
     if (userAvailable) {
@@ -54,7 +54,7 @@ const Sign_up = asyncHandler(async (req, res) => {
         enrollment_no: enrollment_no,
         ProfileImage: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
       };
-      const user = await client.create(New_user);
+      const user = await StudentUser.create(New_user);
       const accessToken = jwt.sign(
         {
           user: {
@@ -247,4 +247,28 @@ const ValidatePhoneNumber=asyncHandler(async(req,res)=>{
     
     })
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber};
+    const studentDetails = asyncHandler(async (req, res) => {
+      try {
+        const { id } = req.params; // Extract id from request parameters
+    
+        if (id) {
+          // Fetch and return the specific student if id is provided
+          const user = await StudentUser.findById(id);
+          if (user) {
+            return res.status(constants.OK).json(user);
+          } else {
+            return res.status(constants.NOT_FOUND).json({ message: 'User not found' });
+          }
+        } else {
+          // Fetch and return all students if no id is provided
+          const users = await StudentUser.find({});
+          return res.status(constants.OK).json(users);
+        }
+      } catch (error) {
+        console.error('Error fetching student details:', error);
+        res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+      }
+    });
+     
+
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails};

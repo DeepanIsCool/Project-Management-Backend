@@ -9,10 +9,12 @@ const {
   SendOtpEmail,
   ValidateEmailOTP,
   ValidatePhoneNumber,
+  studentDetails
 
 } = require("./studentsController");
 const { studentsChecker } = require("./studentsChecker");
 const { studentDashboard } = require("./studentsDashboard");
+const { facultyChecker } = require("../Faculty/facultyChecker");
 
 router.route("/signin").post(Sign_in);
 router.route("/signup").post(Sign_up);
@@ -22,6 +24,7 @@ router.route("/signupvalidation/validatePhoneNumberOTP").post(ValidatePhoneNumbe
 router.route("/signup/SendOtpEmail").post(SendOtpEmail);
 router.route("/signup/SendOtpNumber").post(SendOtpNumber);
 router.route("/studentDashboard").post(studentsChecker,studentDashboard);
+router.route("/studentdetails/:id").get(facultyChecker,studentDetails);
 // router.route("/callback").get(pjwt_callback);
 
 module.exports = router;
