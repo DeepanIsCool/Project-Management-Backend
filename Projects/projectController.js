@@ -100,25 +100,23 @@ const EditProject = async (req, res) => {
 // Function to get all projects
 const getProjects = asyncHandler(async (req, res) => {
   try {
-    const { projectId } = req.params; // Extract projectId from request parameters
+    const userId = req.user.id; // Extract user ID from the request
 
-    if (projectId) {
-      // Fetch and return the specific project if projectId is provided
-      const project = await Project.findById(projectId);
-      if (!project) {
-        return res.status(404).json({ message: 'Project not found' });
-      }
-      return res.status(200).json(project);
-    } else {
-      // Fetch and return all projects if no projectId is provided
-      const projects = await Project.find({});
-      return res.status(200).json(projects);
+    // Fetch and return all projects for which the user is the head faculty (createdBY)
+    const projects = await Project.find({ createdBY: userId });
+
+    if (projects.length === 0) {
+      return res.status(404).json({ message: 'No projects found for this user' });
     }
+
+    return res.status(200).json(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+
 
 // Student applies for a project
 const applyForProject = async (req, res) => {

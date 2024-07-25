@@ -50,11 +50,18 @@ status: {
   },
   createdBY: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: "admin",
   },
+  studentTeam : {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: null,
+    ref: "student",
+  },
+  }
 
 
+);
 
-});
+module.exports = mongoose.model("projects", projectSchema);
 
 module.exports = mongoose.model("projects", projectSchema);
