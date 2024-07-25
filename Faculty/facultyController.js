@@ -205,7 +205,7 @@ const SendOtpEmail=asyncHandler(async(req,res)=>{
   })
 
   
-const ValidateEmailOTP=asyncHandler(async(req,res)=>{
+  const ValidateEmailOTP=asyncHandler(async(req,res)=>{
     const {Email,otp}=req.body;
     
     if(!Email ||!otp){
