@@ -120,7 +120,7 @@ const getProjects = asyncHandler(async (req, res) => {
 
 // Student applies for a project
 const applyForProject = async (req, res) => {
-  const projectId = req.params.id;
+  const {projectId} = req.body;
   // console.log(projectId);
   const { studentId } = req.body;
   // console.log(studentId);
