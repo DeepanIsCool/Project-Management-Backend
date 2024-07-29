@@ -177,7 +177,7 @@ const approveApplication = async (req, res) => {
   console.log(applicationId,status);
   try {
       // Find the application by ID and populate project details
-      const application = await ProjectAssignment.findById({_id:req.params.id});
+      const application = await ProjectAssignment.findById({_id:applicationId});
       console.log(application);
       if (!application) {
           return res.status(404).json({ message: 'Application not found' });

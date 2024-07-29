@@ -10,7 +10,7 @@ router.route("/editProject/:id").put(facultyChecker,EditProject);
 router.route("/getProjects").get(facultyChecker,getProjects);
 // router.route("/getProjects/:id").get(studentsChecker,getProjects);
 router.route("/applyforProject/:id").post(applyForProject);
-router.route("/approveforProject/:id").post(facultyChecker,approveApplication);
+router.route("/approveforProject").post(facultyChecker,approveApplication);
 router.route("/getallapplications").get(facultyChecker,getAllApplications);
 
 module.exports = router;
