@@ -11,7 +11,7 @@ module.exports.facultyChecker = async (req, res, next) => {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
     if (err) {
-      console.log(err.message);
+      //console.log(err.message);
       return res.sendStatus(401);
     } else {
       const facultyId = decoded.user; // This should contain the faculty's ID
