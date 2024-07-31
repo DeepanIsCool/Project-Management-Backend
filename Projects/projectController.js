@@ -8,7 +8,7 @@ const Faculty = require("../Faculty/facultyUserModel");
 
 const CreateProject = asyncHandler(async (req, res) => {
     // Destructure required fields from formData
-    const { project_name, launchDate, launchTime, status, expiryDate, expiryTime, requirements, projectDuration, description } = req.body;
+    const { project_name, launchDate, launchTime, status, expiryDate, expiryTime, requirements, projectDuration, description, faculty_list } = req.body;
 
     // Check if all required fields are present
     if (!project_name || !launchDate || !launchTime || !status || !expiryDate || !expiryTime || !requirements || !projectDuration || !description) {
@@ -32,6 +32,7 @@ const CreateProject = asyncHandler(async (req, res) => {
         projectDuration,
         description,
         requirements,
+        faculty_list,
         createdBY: req.user._id, // Assume user ID is available in req.user
     });
 

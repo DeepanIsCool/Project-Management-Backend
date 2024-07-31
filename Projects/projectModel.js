@@ -63,5 +63,3 @@ status: {
 );
 
 module.exports = mongoose.model("projects", projectSchema);
-
-module.exports = mongoose.model("projects", projectSchema);
