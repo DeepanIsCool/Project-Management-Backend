@@ -3,7 +3,7 @@
 const asyncHandler = require("express-async-handler");
 const { sendOtp } = require("../OTPs/otpUtils");
 const otpModel = require("../OTPs/otpModel")
-const client = require("./facultyUserModel");
+const facultyUser = require("./facultyUserModel");
 const constants = require("../constants");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
@@ -15,7 +15,7 @@ const Sign_in = asyncHandler(async (req, res) => {
   if (!employee_id || !password) {
     res.status(constants.VALIDATION_ERROR).json("all fields are required");
   }
-  const userAvailable = await client.findOne({ employee_id: employee_id });
+  const userAvailable = await facultyUser.findOne({ employee_id: employee_id });
 
   if (
     userAvailable &&
@@ -50,7 +50,7 @@ const Sign_up = asyncHandler(async (req, res) => {
         .status(constants.VALIDATION_ERROR)
         .json("all fields are required");
     }
-    const userAvailable = await client.findOne({
+    const userAvailable = await facultyUser.findOne({
       $or: [{ email: email }, { employee_id: employee_id }, { phone: phone }],
     });
     if (userAvailable) {
@@ -65,7 +65,7 @@ const Sign_up = asyncHandler(async (req, res) => {
         employee_id: employee_id,
         ProfileImage: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
       };
-      const user = await client.create(New_user);
+      const user = await facultyUser.create(New_user);
       const accessToken = jwt.sign(
         {
           user: {
@@ -261,4 +261,9 @@ const ValidatePhoneNumber=asyncHandler(async(req,res)=>{
     
     })
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber};
+const getAllFaculty=asyncHandler(async(req,res)=>{
+  const facultydata=await facultyUser.find();
+  res.json(facultydata);
+})
+
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,getAllFaculty};
