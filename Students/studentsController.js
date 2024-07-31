@@ -247,7 +247,7 @@ const ValidatePhoneNumber=asyncHandler(async(req,res)=>{
     
     })
 
-    const studentDetails = asyncHandler(async (req, res) => {
+const studentDetails = asyncHandler(async (req, res) => {
       try {
         const { id } = req.params; // Extract id from request parameters
     
@@ -269,6 +269,20 @@ const ValidatePhoneNumber=asyncHandler(async(req,res)=>{
         res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
       }
     });
+
+const getAllStudents = asyncHandler(async (req, res) => {
+  try {
+    const students = await StudentUser.find({});
+    if (students.length === 0) {
+      return res.status(constants.NOT_FOUND).json({ message: 'No students found' });
+    }
+    return res.status(constants.OK).json(students);
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+  }
+})
+
      
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails};
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents};
