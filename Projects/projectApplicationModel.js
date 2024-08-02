@@ -13,8 +13,8 @@ const applicationSchema = new mongoose.Schema({
         ref: 'Project', 
         required: true 
     },  
-    head_facultyId:{
-        type: mongoose.Schema.Types.ObjectId,
+    facultyId:{
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'facultyuser',
         required: true
     },
