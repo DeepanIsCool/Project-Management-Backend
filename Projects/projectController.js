@@ -175,37 +175,42 @@ const applyForProject = async (req, res) => {
 
 const approveApplication = async (req, res) => {
   const { applicationId, status } = req.body; // status can be 'approve' or 'reject'
-  console.log(applicationId,status);
+  console.log(applicationId, status);
+
   try {
-      // Find the application by ID and populate project details
-      const application = await ProjectAssignment.findById({_id:applicationId});
-      console.log(application);
-      if (!application) {
-          return res.status(404).json({ message: 'Application not found' });
-      }
+    // Find the application by ID and populate project details
+    const application = await ProjectAssignment.findById(applicationId);
+    console.log(application);
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
 
-      // Check if the requesting user is authorized to approve the application
-      // if (application.projectId.facultyId.toString() !== req.user._id.toString()) {
-      //     return res.status(403).json({ message: 'You are not authorized to approve this application' });
-      // }
+    // Check if the requesting user is authorized to approve the application
+    // Uncomment and adjust this check as per your authorization logic
+    // if (application.projectId.facultyId.toString() !== req.user._id.toString()) {
+    //     return res.status(403).json({ message: 'You are not authorized to approve this application' });
+    // }
 
-      // Handle the status (approve or reject)
-      if (status === 'Approved') {
-          application.status = 'Approved';
-          // await Project.findByIdAndUpdate(application.projectId._id, {
-          //     $addToSet: { approvedStudents: application.studentId }
-          // });
-          await application.save();
-          res.status(200).json({ message: 'Application approved successfully' });
-      } else if (status === 'Rejected') {
-          await ProjectAssignment.findByIdAndDelete(applicationId);
-          res.status(200).json({ message: 'Application rejected and deleted successfully' });
-      } else {
-          return res.status(400).json({ message: 'Invalid status' });
-      }
+    if (status === 'Approved') {
+      application.status = 'Approved';
+
+      // Add the student to the project's studentTeam
+      await Project.findByIdAndUpdate(
+        application.projectId, // Ensure application.projectId is the correct project ID
+        { $addToSet: { studentTeam: application.studentId } } // Add studentId to studentTeam array
+      );
+
+      await application.save();
+      res.status(200).json({ message: 'Application approved successfully' });
+    } else if (status === 'Rejected') {
+      await ProjectAssignment.findByIdAndDelete(applicationId);
+      res.status(200).json({ message: 'Application rejected and deleted successfully' });
+    } else {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
