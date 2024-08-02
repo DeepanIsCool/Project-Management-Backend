@@ -9,7 +9,7 @@ router.route("/createProject").post(facultyChecker,CreateProject);
 router.route("/editProject/:id").put(facultyChecker,EditProject);
 router.route("/getProjects").get(facultyChecker,getProjects);
 // router.route("/getProjects/:id").get(studentsChecker,getProjects);
-router.route("/applyforProject").post(applyForProject);
+router.route("/applyforProject").post(studentsChecker,applyForProject);
 router.route("/approveforProject").post(facultyChecker,approveApplication);
 router.route("/getallapplications").get(facultyChecker,getAllApplications);
 

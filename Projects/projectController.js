@@ -8,10 +8,10 @@ const Faculty = require("../Faculty/facultyUserModel");
 
 const CreateProject = asyncHandler(async (req, res) => {
     // Destructure required fields from formData
-    const { project_name, launchDate, launchTime, status, expiryDate, expiryTime, requirements, projectDuration, description, faculty_list } = req.body;
+    const { project_name, launchDate, launchTime, status, expiryDate, requirements, projectDuration, description, faculty_list } = req.body;
 
     // Check if all required fields are present
-    if (!project_name || !launchDate || !launchTime || !status || !expiryDate || !expiryTime || !requirements || !projectDuration || !description) {
+    if (!project_name || !launchDate || !launchTime || !status || !expiryDate || !requirements || !projectDuration || !description) {
         return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -28,7 +28,6 @@ const CreateProject = asyncHandler(async (req, res) => {
         launchTime,
         status,
         expiryDate,
-        expiryTime,
         projectDuration,
         description,
         requirements,
@@ -123,7 +122,7 @@ const getProjects = asyncHandler(async (req, res) => {
 const applyForProject = async (req, res) => {
   const {projectId} = req.body;
   // console.log(projectId);
-  const { studentId } = req.body;
+  const studentId = req.user._id;
   // console.log(studentId);
 
   try {
