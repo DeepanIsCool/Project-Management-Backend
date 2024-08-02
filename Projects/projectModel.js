@@ -17,7 +17,7 @@ const projectSchema = new mongoose.Schema({
 status: {
     type: String,
     required: true,
-    enum: ["Ongoing", "upcoming", "Completed"],
+    enum: ["Ongoing", "Upcoming", "Completed"],
   },
 
   project_cover_img: {
