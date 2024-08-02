@@ -102,8 +102,13 @@ const getProjects = asyncHandler(async (req, res) => {
   try {
     const userId = req.user.id; // Extract user ID from the request
 
-    // Fetch and return all projects for which the user is the head faculty (createdBY)
-    const projects = await Project.find({ createdBY: userId });
+    // Fetch and return all projects where the user is the head faculty (createdBY) or in the faculty list
+    const projects = await Project.find({
+      $or: [
+        { createdBY: userId },
+        { faculty_list: userId }
+      ]
+    });
 
     if (projects.length === 0) {
       return res.status(404).json({ message: 'No projects found for this user' });
