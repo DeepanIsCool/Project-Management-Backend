@@ -10,19 +10,19 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  launchTime:{
-  type: String,
-  required: true,
-},
-status: {
+  launchTime: {
+    type: String,
+    required: true,
+  },
+  status: {
     type: String,
     required: true,
     enum: ["Ongoing", "Upcoming", "Completed"],
   },
 
   project_cover_img: {
-    type: String, 
-    default:null,
+    type: String,
+    default: null,
   },
 
   expiryDate: {
@@ -30,7 +30,7 @@ status: {
     required: true,
   },
 
-  projectDuration:{
+  projectDuration: {
     type: String,
     required: true,
   },
@@ -44,7 +44,7 @@ status: {
     type: String,
     default: null,
   },
-  faculty_list:{
+  faculty_list: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "admin",
   },
@@ -52,14 +52,9 @@ status: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "admin",
   },
-  studentTeam : {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: null,
-    ref: "student",
-  },
-  }
-
-
-);
+  studentTeam: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "student", default: null },
+  ],
+});
 
 module.exports = mongoose.model("projects", projectSchema);

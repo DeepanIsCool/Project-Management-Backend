@@ -174,33 +174,25 @@ const applyForProject = async (req, res) => {
 };
 
 const approveApplication = async (req, res) => {
-  const { applicationId, status } = req.body; // status can be 'approve' or 'reject'
-  console.log(applicationId, status);
+  const { applicationId, status } = req.body;
 
   try {
     // Find the application by ID and populate project details
     const application = await ProjectAssignment.findById(applicationId);
-    console.log(application);
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
     }
 
-    // Check if the requesting user is authorized to approve the application
-    // Uncomment and adjust this check as per your authorization logic
-    // if (application.projectId.facultyId.toString() !== req.user._id.toString()) {
-    //     return res.status(403).json({ message: 'You are not authorized to approve this application' });
-    // }
-
+    // Handle the status (approve or reject)
     if (status === 'Approved') {
       application.status = 'Approved';
-
-      // Add the student to the project's studentTeam
-      await Project.findByIdAndUpdate(
-        application.projectId, // Ensure application.projectId is the correct project ID
-        { $addToSet: { studentTeam: application.studentId } } // Add studentId to studentTeam array
-      );
-
       await application.save();
+
+      // Add student to the project's studentTeam
+      await Project.findByIdAndUpdate(application.projectId, {
+        $addToSet: { studentTeam: application.studentId }
+      });
+
       res.status(200).json({ message: 'Application approved successfully' });
     } else if (status === 'Rejected') {
       await ProjectAssignment.findByIdAndDelete(applicationId);
@@ -213,6 +205,7 @@ const approveApplication = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 
 
   
