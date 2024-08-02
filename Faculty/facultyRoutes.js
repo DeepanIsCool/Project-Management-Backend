@@ -14,6 +14,7 @@ const {
 } = require("./facultyController");
 const { facultyChecker } = require("./facultyChecker");
 const { facultyDashboard } = require("./facultyDashboard");
+const { studentsChecker } = require("../Students/studentsChecker");
 
 router.route("/signin").post(Sign_in);
 router.route("/signup").post(Sign_up);
@@ -24,6 +25,7 @@ router.route("/signupvalidation/validateEmailOTP").post(ValidateEmailOTP);
 router.route("/signupvalidation/validatePhoneNumberOTP").post(ValidatePhoneNumber);
 router.route("/facultyDashboard").post(facultyChecker,facultyDashboard);
 router.route("/getAllFaculty").get(facultyChecker,getAllFaculty);
+router.route("/getAllFaculty").get(studentsChecker,getAllFaculty);
 // router.route("/callback").get(pjwt_callback);
 
 module.exports = router;
