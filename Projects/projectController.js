@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Project = require("./projectModel");
-const ProjectAssignment = require("./projectApplicationModel");
+const ProjectApplication = require("./projectApplicationModel");
 const constants = require("../constants");
 const FacultyUser = require("../Faculty/facultyUserModel");
 const StudentUser = require("../Students/studentsUserModel");
@@ -51,7 +51,7 @@ const getAllApplications = asyncHandler(async (req, res) => {
     const facultyId = req.user.id;
 
     // Find all project applications where the head_facultyId matches the facultyId
-    const applications = await ProjectAssignment.find({ head_facultyId: facultyId });
+    const applications = await ProjectApplication.find({ head_facultyId: facultyId });
 
     // Return the applications in the response
     res.status(200).json(applications);
@@ -145,7 +145,7 @@ const applyForProject = async (req, res) => {
     // }
 
     // Check if the student has already applied for this project
-    const existingApplication = await ProjectAssignment.findOne({ studentId, projectId });
+    const existingApplication = await ProjectApplication.findOne({ studentId, projectId });
     console.log(existingApplication);
     if (existingApplication) {
       return res.status(400).json({ message: 'You have already applied for this project' });
@@ -153,7 +153,7 @@ const applyForProject = async (req, res) => {
     const student = await StudentUser.findById({_id:studentId});
     console.log(student);
     // Create a new project assignment
-    const application = new ProjectAssignment({
+    const application = new ProjectApplication({
       studentId: studentId,
       projectId: projectId,
       head_facultyId: project.createdBY,
@@ -177,7 +177,7 @@ const approveApplication = async (req, res) => {
 
   try {
     // Find the application by ID and populate project details
-    const application = await ProjectAssignment.findById(applicationId);
+    const application = await ProjectApplication.findById(applicationId);
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
     }
@@ -194,7 +194,7 @@ const approveApplication = async (req, res) => {
 
       res.status(200).json({ message: 'Application approved successfully' });
     } else if (status === 'Rejected') {
-      await ProjectAssignment.findByIdAndDelete(applicationId);
+      await ProjectApplication.findByIdAndDelete(applicationId);
       res.status(200).json({ message: 'Application rejected and deleted successfully' });
     } else {
       return res.status(400).json({ message: 'Invalid status' });
@@ -205,9 +205,36 @@ const approveApplication = async (req, res) => {
   }
 };
 
+const deleteProject = async (req, res) => {
+  const { projectID } = req.body;
+  
+  try {
+    // Delete all project assignments related to the project
+    const result2 = await ProjectApplication.deleteMany({ projectId: projectID });
+
+    // Delete the project
+    const result1 = await Project.findByIdAndDelete(projectID);
+
+    if (!result1) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Check if any project assignments were deleted
+    if (result2.deletedCount === 0) {
+      return res.status(404).json({ message: "No related ProjectAssignments found" });
+    }
+
+    res.status(200).json({ message: "Project and related applications deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 
 
   
-module.exports = { getProjects, EditProject, CreateProject, applyForProject, approveApplication, getAllApplications };
+module.exports = { getProjects, EditProject, CreateProject, applyForProject, approveApplication, getAllApplications, deleteProject };
   
 
