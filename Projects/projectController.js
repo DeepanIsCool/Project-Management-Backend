@@ -46,41 +46,40 @@ const CreateProject = asyncHandler(async (req, res) => {
 });
 
 const EditProject = async (req, res) => {
-    try {
-      
-      const {project_name,launchDate,launchTime,status,expiryDate,expiryTime,projectDuration,description,requirements} = req.body;
-      let {projectId} = req.body;
-      let project = await Project.findById(projectId);
-  
-      if (!project) {
-        return res.status(404).json({ message: "Project not found" });
-      }
-  
-     
-  
-      if (project_name || launchDate ||launchTime ||status ||expiryDate ||expiryTime ||projectDuration ||description ||requirements ||faculty_list) {
-        if (project_name) project.project_name = project_name;
-        if (description) project.description = description;
-        if (launchDate) project.launchDate = launchDate;
-        if (launchTime) project.launchTime = launchTime;
-        if (status) project.status = status;
-        if (expiryDate) project.expiryDate = expiryDate;
-        if (projectDuration) project.projectDuration = projectDuration;
-        if (requirements) project.requirements = requirements;
-        if (faculty_list) project.faculty_list = faculty_list;
-      } else {
-        return res.status(400).json({ error: "At least one field should be provided for update" });
-      }
-  
-        project.save();
-  
-      res.status(200).json({ message: "Project updated successfully" });
-    } catch (error) {
-      console.error("Error updating project:", error);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  };
+  try {
+    const { project_name, launchDate, launchTime, status, expiryDate, projectDuration, description, requirements, faculty_list } = req.body;
+    const projectId = req.params.id; // Extract project ID from the request parameters
+    console.log(projectId);
 
+    // Fetch the project using the provided project ID
+    const project = await Project.findById(projectId);
+
+    // Check if the project exists
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Update fields if they are provided in the request body
+    if (project_name) project.project_name = project_name;
+    if (description) project.description = description;
+    if (launchDate) project.launchDate = launchDate;
+    if (launchTime) project.launchTime = launchTime;
+    if (status) project.status = status;
+    if (expiryDate) project.expiryDate = expiryDate;
+    if (projectDuration) project.projectDuration = projectDuration;
+    if (requirements) project.requirements = requirements;
+    if (faculty_list) project.faculty_list = faculty_list;
+
+    // Save the updated project
+    await project.save();
+
+    // Return a success response
+    res.status(200).json({ message: "Project updated successfully" });
+  } catch (error) {
+    console.error("Error updating project:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 const getAllApplications = asyncHandler(async (req, res) => {
   try {
     // Extract facultyId from the authenticated user
