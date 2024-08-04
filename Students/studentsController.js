@@ -249,7 +249,7 @@ const ValidatePhoneNumber=asyncHandler(async(req,res)=>{
 
 const studentDetails = asyncHandler(async (req, res) => {
       try {
-        const { id } = req.params; // Extract id from request parameters
+        const { id } = req.body; 
     
         if (id) {
           // Fetch and return the specific student if id is provided

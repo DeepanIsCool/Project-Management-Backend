@@ -25,7 +25,7 @@ const adminSchema = new mongoose.Schema(
     },
 
     admin_id: {
-        type: String,
+      type: String,
       required: true,
       unique: true,
     },

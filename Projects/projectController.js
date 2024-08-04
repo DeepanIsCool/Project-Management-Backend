@@ -97,7 +97,7 @@ const EditProject = async (req, res) => {
     }
   };
 
-// Function to get all projects
+// Function to get projects
 const getProjects = asyncHandler(async (req, res) => {
   try {
     const userId = req.user.id; // Extract user ID from the request
