@@ -49,8 +49,8 @@ const EditProject = async (req, res) => {
     try {
       
       const {project_name,launchDate,launchTime,status,expiryDate,expiryTime,projectDuration,description,requirements} = req.body;
-  
-      let project = await Project.findById(req.params.id);
+      let {projectId} = req.body;
+      let project = await Project.findById(projectId);
   
       if (!project) {
         return res.status(404).json({ message: "Project not found" });

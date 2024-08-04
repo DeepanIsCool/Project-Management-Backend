@@ -6,7 +6,7 @@ const { studentsChecker } = require("../Students/studentsChecker");
 //const { adminChecker } = require("../Admin/adminChecker");
 
 router.route("/createProject").post(facultyChecker,CreateProject);
-router.route("/editProject/:id").put(facultyChecker,EditProject);
+router.route("/editProject").put(facultyChecker,EditProject);
 router.route("/getProjects").get(facultyChecker,getProjects);
 // router.route("/getProjects/:id").get(studentsChecker,getProjects);
 router.route("/applyforProject").post(studentsChecker,applyForProject);
