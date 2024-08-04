@@ -120,8 +120,6 @@ const getProjects = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 // Student applies for a project
 const applyForProject = async (req, res) => {
   const { projectId } = req.body;
@@ -188,6 +186,8 @@ const approveApplication = async (req, res) => {
       await Project.findByIdAndUpdate(application.projectId, {
         $addToSet: { studentTeam: application.studentId }
       });
+
+      await ProjectApplication.findByIdAndDelete(applicationId);
 
       res.status(200).json({ message: 'Application approved successfully' });
     } else if (status === 'Rejected') {
