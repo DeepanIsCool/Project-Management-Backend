@@ -229,10 +229,23 @@ const deleteProject = async (req, res) => {
   }
 };
 
+const getAllProjects = asyncHandler(async (req, res) => {
+  try {
+    const projects = await Project.find({});
+    if (projects.length === 0) {
+      return res.status(constants.NOT_FOUND).json({ message: 'No projects found' });
+    }
+    return res.status(constants.OK).json(projects);
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+  }
+});
+
 
 
 
   
-module.exports = { getProjects, EditProject, CreateProject, applyForProject, approveApplication, getAllApplications, deleteProject };
+module.exports = { getProjects, EditProject, CreateProject, applyForProject, approveApplication, getAllApplications, deleteProject,getAllProjects };
   
 
