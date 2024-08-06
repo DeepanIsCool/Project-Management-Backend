@@ -25,7 +25,7 @@ router.route("/signupvalidation/validatePhoneNumberOTP").post(ValidatePhoneNumbe
 router.route("/signup/SendOtpEmail").post(SendOtpEmail);
 router.route("/signup/SendOtpNumber").post(SendOtpNumber);
 router.route("/studentDashboard").post(studentsChecker,studentDashboard);
-router.route("/studentdetails").get(facultyChecker,studentDetails);
+router.route("/studentdetails").post(facultyChecker,studentDetails);
 // router.route("/getAllStudents").get(facultyChecker,getAllStudents);
 
 // router.route("/callback").get(pjwt_callback);
