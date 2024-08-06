@@ -1,6 +1,6 @@
-import multer, { diskStorage } from "multer";
+const multer = require("multer");
 
-const storage = diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "Resumes/"); // Upload files to the 'uploads' directory
   },
@@ -11,4 +11,4 @@ const storage = diskStorage({
 
 const upload = multer({  limits: { fileSize: 100 * 1024 * 1024 }, storage: storage });
 
-export default upload;
+module.exports = upload;
