@@ -59,7 +59,18 @@ const studentUserSchema = new mongoose.Schema(
       default: 0, // Default value if not provided
     
     },
-    
+    stream:{
+      type: String,
+      default: '', // Default value if not provided
+    },
+    semester:{
+      type: String,
+      default: '', // Default value if not provided
+    },
+    year:{
+      type: String,
+      default: '', // Default value if not provided
+    },
     access_token: {
       type: String,
     },

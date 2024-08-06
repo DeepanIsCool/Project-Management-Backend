@@ -8,6 +8,7 @@ const constants = require("../constants");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { Stream } = require("nodemailer/lib/xoauth2");
 
 const Sign_in = asyncHandler(async (req, res) => {
   const { enrollment_no, password } = req.body;
@@ -52,6 +53,7 @@ const Sign_up = asyncHandler(async (req, res) => {
         password: hashedPassword,
         phone: phone,
         enrollment_no: enrollment_no,
+        Stream: StudentUser.Stream,
         ProfileImage: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
       };
       const user = await StudentUser.create(New_user);
@@ -302,7 +304,7 @@ const addstudentresume = asyncHandler(async (req, res) => {
 
 const editProfile = asyncHandler(async (req, res) => {
   try {
-    const { phone, email, password, name, ProfileImage, Introduction, Skills, Sec, roll_number, resume } = req.body;
+    const { phone, email, password, name, ProfileImage, Introduction, Skills, Sec, roll_number, resume,stream,year,semester } = req.body;
     const studentId = req.user._id; // Assuming req.user contains authenticated user data
     console.log(studentId);
 
@@ -324,6 +326,9 @@ const editProfile = asyncHandler(async (req, res) => {
     if (Skills) student.Skills = Skills;
     if (Sec) student.Sec = Sec;
     if (roll_number) student.roll_number = roll_number;
+    if (stream) student.stream = stream;
+    if (year) student.year = year;
+    if (semester) student.semester = semester
     // if (resume) student.resume = resume;
 
     // Save the updated student profile

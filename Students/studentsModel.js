@@ -1,5 +1,6 @@
 //studentmodelschema
 const mongoose = require("mongoose");
+const { Stream } = require("nodemailer/lib/xoauth2");
 
 const studentSchema = new mongoose.Schema(
 {
@@ -42,7 +43,8 @@ const studentSchema = new mongoose.Schema(
     Email:{
         type: String,
         required: true,
-    }
+    },
+
 }
   );
   
