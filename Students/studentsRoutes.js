@@ -10,12 +10,15 @@ const {
   ValidateEmailOTP,
   ValidatePhoneNumber,
   studentDetails,
-  getAllStudents
+  getAllStudents,
+  addstudentresume,
+  editProfile
 
 } = require("./studentsController");
 const { studentsChecker } = require("./studentsChecker");
 const { studentDashboard } = require("./studentsDashboard");
 const { facultyChecker } = require("../Faculty/facultyChecker");
+const upload = require("../middlewares/multer.middleware");
 
 router.route("/signin").post(Sign_in);
 router.route("/signup").post(Sign_up);
@@ -26,6 +29,8 @@ router.route("/signup/SendOtpEmail").post(SendOtpEmail);
 router.route("/signup/SendOtpNumber").post(SendOtpNumber);
 router.route("/studentDashboard").post(studentsChecker,studentDashboard);
 router.route("/studentdetails").post(facultyChecker,studentDetails);
+router.route("/addstudentresume").post(studentsChecker,upload.single("resume"),addstudentresume);
+router.route("/editProfile").put(studentsChecker,editProfile);
 // router.route("/getAllStudents").get(facultyChecker,getAllStudents);
 
 // router.route("/callback").get(pjwt_callback);

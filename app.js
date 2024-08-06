@@ -6,6 +6,8 @@ const studentsRoutes = require('./Students/studentsRoutes');
 const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
@@ -22,17 +24,27 @@ const allowedOrigins = [
   
 ];
 
+
 const corsOptions = {
   origin: (origin, callback) => {
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
-    }
+    }  
   },
 };
 
 app.use(cors(corsOptions));
+const resumeDir = path.join(__dirname, 'Resumes');
+
+// Check if the "resume" directory exists, if not, create it
+if (!fs.existsSync(resumeDir)) {
+  fs.mkdirSync(resumeDir);
+  console.log('Directory "resume" created.');
+} else {
+  console.log('Directory "resume" already exists.');
+}
 // Routes
 // app.use('/studentsRoutes', studentsRoutes);
 app.use('/studentsRoutes', require("./Students/studentsRoutes"));

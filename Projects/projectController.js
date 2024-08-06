@@ -80,6 +80,8 @@ const EditProject = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
 const getAllApplications = asyncHandler(async (req, res) => {
   try {
     // Extract facultyId from the authenticated user

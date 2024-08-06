@@ -283,6 +283,60 @@ const getAllStudents = asyncHandler(async (req, res) => {
   }
 })
 
-     
+const addstudentresume = asyncHandler(async (req, res) => {
+  try{
+    const resume = req.file?.path;
+    const student = await StudentUser.findById(req.user._id);
+    if(!student){
+      return res.status(constants.NOT_FOUND).json({ message: 'Student not found' });
+    }
+    student.resume = resume;
+    await student.save();
+    res.status(constants.OK).json({ message: 'Resume added successfully' });
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents};
+
+  }catch(error){
+    console.error('Error adding student resume:', error);
+    res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+}})
+
+const editProfile = asyncHandler(async (req, res) => {
+  try {
+    const { phone, email, password, name, ProfileImage, Introduction, Skills, Sec, roll_number, resume } = req.body;
+    const studentId = req.user._id; // Assuming req.user contains authenticated user data
+    console.log(studentId);
+
+    // Fetch the student using the provided student ID
+    const student = await StudentUser.findById(studentId);
+
+    // Check if the student exists
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Update fields if they are provided in the request body
+    if (phone) student.phone = phone;
+    if (email) student.email = email;
+    if (password) student.password = await bcrypt.hash(password, 10); // Hash the new password before saving
+    if (name) student.name = name;
+    // if (ProfileImage) student.ProfileImage = ProfileImage;/
+    if (Introduction) student.Introduction = Introduction;
+    if (Skills) student.Skills = Skills;
+    if (Sec) student.Sec = Sec;
+    if (roll_number) student.roll_number = roll_number;
+    // if (resume) student.resume = resume;
+
+    // Save the updated student profile
+    await student.save();
+
+    // Return a success response
+    res.status(200).json({ message: "Profile updated successfully" });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents,addstudentresume, editProfile};

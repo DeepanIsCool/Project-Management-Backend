@@ -33,6 +33,33 @@ const studentUserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    resume: {
+      type: String,
+      // required: true,
+    },
+
+    Introduction: {
+      type: String,
+      default: '', // Default value if not provided
+    },
+
+    Skills: {
+      type: [String], // Array of strings
+      default: [], // Default value if not provided
+    },
+
+    Sec: {
+      type: String, // Character type, use string with validation
+      maxlength: 1, // Ensure only a single character is allowed
+      default: '', // Default value if not provided
+    },
+
+    roll_number: {
+      type: Number,
+      default: 0, // Default value if not provided
+    
+    },
+    
     access_token: {
       type: String,
     },
