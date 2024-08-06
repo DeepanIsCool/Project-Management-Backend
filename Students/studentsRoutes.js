@@ -18,7 +18,7 @@ const {
 const { studentsChecker } = require("./studentsChecker");
 const { studentDashboard } = require("./studentsDashboard");
 const { facultyChecker } = require("../Faculty/facultyChecker");
-const upload = require("../middlewares/multer.middleware");
+const upload = require("../middlewares/multer.middleware").default;
 
 router.route("/signin").post(Sign_in);
 router.route("/signup").post(Sign_up);
