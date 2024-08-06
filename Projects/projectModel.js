@@ -55,6 +55,10 @@ const projectSchema = new mongoose.Schema({
   studentTeam: [
     { type: mongoose.Schema.Types.ObjectId, ref: "student", default: null },
   ],
+  githubLink: {
+    type: String,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("projects", projectSchema);

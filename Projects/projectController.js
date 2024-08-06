@@ -8,10 +8,10 @@ const Faculty = require("../Faculty/facultyUserModel");
 
 const CreateProject = asyncHandler(async (req, res) => {
     // Destructure required fields from formData
-    const { project_name, launchDate, launchTime, status, expiryDate, requirements, projectDuration, description, faculty_list } = req.body;
+    const { project_name, launchDate, launchTime, status, expiryDate, requirements, projectDuration, description, faculty_list,githubLink } = req.body;
 
     // Check if all required fields are present
-    if (!project_name || !launchDate || !launchTime || !status || !expiryDate || !requirements || !projectDuration || !description) {
+    if (!project_name || !launchDate || !launchTime || !status || !expiryDate || !requirements || !projectDuration) {
         return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -32,6 +32,7 @@ const CreateProject = asyncHandler(async (req, res) => {
         description,
         requirements,
         faculty_list,
+        githubLink,
         createdBY: req.user._id, // Assume user ID is available in req.user
     });
 
@@ -47,7 +48,7 @@ const CreateProject = asyncHandler(async (req, res) => {
 
 const EditProject = async (req, res) => {
   try {
-    const { project_name, launchDate, launchTime, status, expiryDate, projectDuration, description, requirements, faculty_list } = req.body;
+    const { project_name, launchDate, launchTime, status, expiryDate, projectDuration, description, requirements, faculty_list, githubLink } = req.body;
     const projectId = req.params.id; // Extract project ID from the request parameters
     console.log(projectId);
 
@@ -69,6 +70,7 @@ const EditProject = async (req, res) => {
     if (projectDuration) project.projectDuration = projectDuration;
     if (requirements) project.requirements = requirements;
     if (faculty_list) project.faculty_list = faculty_list;
+    if (githubLink) project.githubLink = githubLink;
 
     // Save the updated project
     await project.save();
