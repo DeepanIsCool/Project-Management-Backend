@@ -12,7 +12,8 @@ const {
   studentDetails,
   getAllStudents,
   addstudentresume,
-  editProfile
+  editProfile,
+  getCurrentProject
 
 } = require("./studentsController");
 const { studentsChecker } = require("./studentsChecker");
@@ -31,6 +32,8 @@ router.route("/studentDashboard").post(studentsChecker,studentDashboard);
 router.route("/studentdetails").post(facultyChecker,studentDetails);
 router.route("/addstudentresume").post(studentsChecker,upload.single("resume"),addstudentresume);
 router.route("/editProfile").put(studentsChecker,editProfile);
+router.route("/getCurrentProject").get(studentsChecker,getCurrentProject);
+
 // router.route("/getAllStudents").get(facultyChecker,getAllStudents);
 
 // router.route("/callback").get(pjwt_callback);

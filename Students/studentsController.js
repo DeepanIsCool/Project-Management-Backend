@@ -4,6 +4,7 @@ const { sendOtp } = require("../OTPs/otpUtils");
 const otpModel = require("../OTPs/otpModel")
 const Student  = require("./studentsModel")
 const StudentUser = require("./studentsUserModel");
+const Project = require("../Projects/projectModel");
 const constants = require("../constants");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
@@ -342,6 +343,26 @@ const editProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const getCurrentProject = asyncHandler(async (req, res) => {
+  try {
+    const studentId = req.user._id; // Extracted from the auth token
+
+    // Find projects where the studentId is part of the studentTeam
+    const projects = await Project.find({ studentTeam: studentId });
+
+    // If no projects are found
+    if (projects.length === 0) {
+      return res.status(constants.NOT_FOUND).json({ message: "No projects found for this student" });
+    }
+
+    // Return the found projects
+    res.status(constants.OK).json(projects);
+  } catch (error) {
+    console.error("Error fetching current projects:", error);
+    res.status(constants.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
+  }
+});
 
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents,addstudentresume, editProfile};
+
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents,addstudentresume, editProfile, getCurrentProject};
