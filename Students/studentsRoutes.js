@@ -34,7 +34,7 @@ router.route("/addstudentresume").post(studentsChecker,upload.single("resume"),a
 router.route("/editProfile").put(studentsChecker,editProfile);
 router.route("/getCurrentProject").get(studentsChecker,getCurrentProject);
 
-// router.route("/getAllStudents").get(facultyChecker,getAllStudents);
+router.route("/getAllStudents").get(studentsChecker,getAllStudents);
 
 // router.route("/callback").get(pjwt_callback);
 
