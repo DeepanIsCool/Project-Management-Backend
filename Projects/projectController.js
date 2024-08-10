@@ -100,6 +100,30 @@ const getAllApplications = asyncHandler(async (req, res) => {
   }
 });
 
+const getProjectById = asyncHandler(async (req, res) => {
+  try {
+    // Extract the project ID from the request body
+    const { id } = req.body;
+
+    // Ensure the ID is provided
+    if (!id) {
+      return res.status(constants.VALIDATION_ERROR).json({ message: "Project ID is required" });
+    }
+
+    // Fetch the project by ID
+    const project = await Project.findById(id);
+    if (!project) {
+      return res.status(constants.NOT_FOUND).json({ message: "Project not found" });
+    }
+
+    // Return the project details
+    return res.status(constants.OK).json(project);
+  } catch (error) {
+    console.error("Error fetching project:", error);
+    res.status(constants.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
+  }
+});
+
 // Function to get projects
 const getProjects = asyncHandler(async (req, res) => {
   try {
@@ -249,6 +273,6 @@ const getAllProjects = asyncHandler(async (req, res) => {
 
 
   
-module.exports = { getProjects, EditProject, CreateProject, applyForProject, approveApplication, getAllApplications, deleteProject,getAllProjects };
+module.exports = { getProjects, EditProject, CreateProject, applyForProject, approveApplication, getAllApplications, deleteProject,getAllProjects,getProjectById };
   
 
