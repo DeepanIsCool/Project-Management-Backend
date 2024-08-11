@@ -266,4 +266,28 @@ const getAllFaculty=asyncHandler(async(req,res)=>{
   res.json(facultydata);
 })
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,getAllFaculty};
+const facultyProfile = asyncHandler(async (req, res) => {
+  try {
+    // Extract the ID from the authenticated user
+    const id = req.user._id;
+
+    // Fetch and return the specific student if id is provided
+    if (id) {
+      const user = await facultyUser.findById(id);
+      if (user) {
+        return res.status(constants.OK).json(user);
+      } else {
+        return res.status(constants.NOT_FOUND).json({ message: 'User not found' });
+      }
+    } else {
+      // Fetch and return all students if no id is provided (optional, adjust as needed)
+      const users = await facultyUser.find({});
+      return res.status(constants.OK).json(users);
+    }
+  } catch (error) {
+    console.error('Error fetching faculty details:', error);
+    res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+  }
+});
+
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,getAllFaculty,facultyProfile};
