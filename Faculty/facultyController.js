@@ -290,4 +290,42 @@ const facultyProfile = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,getAllFaculty,facultyProfile};
+const editFacultyProfile = asyncHandler(async (req, res) => {
+  try {
+    // Destructure the fields from the request body
+    const { phone, email, password, name, ProfileImage, Introduction, Skills, department, employee_id } = req.body;
+    
+    // Extract the faculty ID from the authenticated user
+    const facultyId = req.user._id; // Assuming req.user contains authenticated user data
+
+    // Fetch the faculty using the provided faculty ID
+    const faculty = await facultyUser.findById(facultyId);
+
+    // Check if the faculty exists
+    if (!faculty) {
+      return res.status(constants.NOT_FOUND).json({ message: "Faculty not found" });
+    }
+
+    // Update fields if they are provided in the request body
+    if (phone) faculty.phone = phone;
+    if (email) faculty.email = email;
+    if (password) faculty.password = await bcrypt.hash(password, 10); // Hash the new password before saving
+    if (name) faculty.name = name;
+    if (ProfileImage) faculty.ProfileImage = ProfileImage;
+    // if (Introduction) faculty.Introduction = Introduction;
+    // if (Skills) faculty.Skills = Skills;
+    // if (department) faculty.department = department;
+    if (employee_id) faculty.employee_id = employee_id;
+
+    // Save the updated faculty profile
+    await faculty.save();
+
+    // Return a success response
+    res.status(constants.OK).json({ message: "Profile updated successfully" });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(constants.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
+  }
+});
+
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,getAllFaculty,facultyProfile, editFacultyProfile};

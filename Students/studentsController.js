@@ -327,7 +327,7 @@ const addstudentresume = asyncHandler(async (req, res) => {
     res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
 }})
 
-const editProfile = asyncHandler(async (req, res) => {
+const editStudentProfile = asyncHandler(async (req, res) => {
   try {
     const { phone, email, password, name, ProfileImage, Introduction, Skills, Sec, roll_number, resume,stream,year,semester } = req.body;
     const studentId = req.user._id; // Assuming req.user contains authenticated user data
@@ -389,4 +389,4 @@ const getCurrentProject = asyncHandler(async (req, res) => {
 
 
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents,addstudentresume, editProfile, getCurrentProject,studentProfile};
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents,addstudentresume, editStudentProfile, getCurrentProject,studentProfile};

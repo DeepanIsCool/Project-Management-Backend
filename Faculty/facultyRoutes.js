@@ -10,7 +10,8 @@ const {
   ValidateEmailOTP,
   ValidatePhoneNumber,
   getAllFaculty,
-  facultyProfile
+  facultyProfile,
+  editFacultyProfile
 
 } = require("./facultyController");
 const { facultyChecker } = require("./facultyChecker");
@@ -28,6 +29,7 @@ router.route("/facultyDashboard").post(facultyChecker,facultyDashboard);
 router.route("/getAllFaculty").get(facultyChecker,getAllFaculty);
 router.route("/getAllFaculty").get(studentsChecker,getAllFaculty);
 router.route("/facultyProfile").get(facultyChecker,facultyProfile);
+router.route("/editFacultyProfile").put(facultyChecker,editFacultyProfile);
 // router.route("/callback").get(pjwt_callback);
 
 module.exports = router;

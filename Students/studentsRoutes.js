@@ -12,7 +12,7 @@ const {
   studentDetails,
   getAllStudents,
   addstudentresume,
-  editProfile,
+  editStudentProfile,
   getCurrentProject,
   studentProfile
 
@@ -32,7 +32,7 @@ router.route("/signup/SendOtpNumber").post(SendOtpNumber);
 router.route("/studentDashboard").post(studentsChecker,studentDashboard);
 router.route("/studentdetails").post(facultyChecker,studentDetails);
 router.route("/addstudentresume").post(studentsChecker,upload.single("resume"),addstudentresume);
-router.route("/editProfile").put(studentsChecker,editProfile);
+router.route("/editStudentProfile").put(studentsChecker,editStudentProfile);
 router.route("/getCurrentProject").get(studentsChecker,getCurrentProject);
 router.route("/studentProfile").get(studentsChecker,studentProfile);
 router.route("/getAllStudents").get(studentsChecker,getAllStudents);
