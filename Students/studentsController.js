@@ -273,6 +273,30 @@ const studentDetails = asyncHandler(async (req, res) => {
       }
     });
 
+    const studentProfile = asyncHandler(async (req, res) => {
+      try {
+        // Extract the ID from the authenticated user
+        const id = req.user._id;
+    
+        // Fetch and return the specific student if id is provided
+        if (id) {
+          const user = await StudentUser.findById(id);
+          if (user) {
+            return res.status(constants.OK).json(user);
+          } else {
+            return res.status(constants.NOT_FOUND).json({ message: 'User not found' });
+          }
+        } else {
+          // Fetch and return all students if no id is provided (optional, adjust as needed)
+          const users = await StudentUser.find({});
+          return res.status(constants.OK).json(users);
+        }
+      } catch (error) {
+        console.error('Error fetching student details:', error);
+        res.status(constants.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+      }
+    });
+
 const getAllStudents = asyncHandler(async (req, res) => {
   try {
     const students = await StudentUser.find({});
@@ -365,4 +389,4 @@ const getCurrentProject = asyncHandler(async (req, res) => {
 
 
 
-module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents,addstudentresume, editProfile, getCurrentProject};
+module.exports = {Sign_in,Sign_up,Sign_upvalidation, SendOtpNumber,SendOtpEmail,ValidateEmailOTP,ValidatePhoneNumber,studentDetails,getAllStudents,addstudentresume, editProfile, getCurrentProject,studentProfile};

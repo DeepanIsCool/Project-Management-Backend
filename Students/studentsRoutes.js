@@ -13,7 +13,8 @@ const {
   getAllStudents,
   addstudentresume,
   editProfile,
-  getCurrentProject
+  getCurrentProject,
+  studentProfile
 
 } = require("./studentsController");
 const { studentsChecker } = require("./studentsChecker");
@@ -33,7 +34,7 @@ router.route("/studentdetails").post(facultyChecker,studentDetails);
 router.route("/addstudentresume").post(studentsChecker,upload.single("resume"),addstudentresume);
 router.route("/editProfile").put(studentsChecker,editProfile);
 router.route("/getCurrentProject").get(studentsChecker,getCurrentProject);
-
+router.route("/studentProfile").get(studentsChecker,studentProfile);
 router.route("/getAllStudents").get(studentsChecker,getAllStudents);
 
 // router.route("/callback").get(pjwt_callback);
