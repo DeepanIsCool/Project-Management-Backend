@@ -354,7 +354,7 @@ const editStudentProfile = asyncHandler(async (req, res) => {
     if (stream) student.stream = stream;
     if (year) student.year = year;
     if (semester) student.semester = semester
-    // if (resume) student.resume = resume;
+    if (resume) student.resume = resume;
 
     // Save the updated student profile
     await student.save();
