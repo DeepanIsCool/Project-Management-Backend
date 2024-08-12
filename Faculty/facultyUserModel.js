@@ -50,7 +50,6 @@ const facultySchema = new mongoose.Schema(
       type: String,
       default: '', // Default value if not provided
     },
-
   },
   { timestamps: true }
 );
