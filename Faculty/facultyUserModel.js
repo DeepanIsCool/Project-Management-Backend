@@ -38,6 +38,19 @@ const facultySchema = new mongoose.Schema(
       default:null,
     
     },
+    Introduction: {
+      type: String,
+      default: '', // Default value if not provided
+    },
+    Skills: {
+      type: [String], // Array of strings
+      default: [], // Default value if not provided
+    },
+    department: {
+      type: String,
+      default: '', // Default value if not provided
+    },
+
   },
   { timestamps: true }
 );
